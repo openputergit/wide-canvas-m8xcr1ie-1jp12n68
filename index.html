@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChainCare - Blockchain Insurance Platform</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #f8fafc;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .policy-card {
+            transition: transform 0.3s ease;
+        }
+        .policy-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="fixed w-full z-50 bg-white shadow-md">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <a href="#" class="text-2xl font-bold text-blue-800">ChainCare</a>
+                    </div>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="#" class="text-gray-700 hover:text-blue-600">Home</a>
+                        <a href="#policies" class="text-gray-700 hover:text-blue-600">Policies</a>
+                        <a href="#dashboard" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+                        <button @click="showLoginModal = true" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Login
+                        </button>
+                    </div>
+                    <button class="md:hidden" @click="mobileMenu = !mobileMenu">
+                        <i class="bi bi-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="gradient-bg pt-32 pb-20">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="text-white">
+                        <h1 class="text-4xl md:text-6xl font-bold mb-6">Secure Your Future with Blockchain Insurance</h1>
+                        <p class="text-lg mb-8">Experience transparent, efficient, and secure insurance powered by blockchain technology.</p>
+                        <button @click="showCreatePolicyModal = true" class="bg-white text-blue-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">
+                            Create Policy
+                        </button>
+                    </div>
+                    <div class="hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1639762681057-408e52192e55?auto=format&fit=crop&q=80" alt="Blockchain illustration" class="rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">Why Choose ChainCare?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <i class="bi bi-shield-check text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-3">Secure & Transparent</h3>
+                        <p class="text-gray-600">All policies are stored on the blockchain, ensuring complete transparency and security.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <i class="bi bi-lightning text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-3">Instant Processing</h3>
+                        <p class="text-gray-600">Smart contracts enable instant policy creation and claim processing.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg">
+                        <i class="bi bi-currency-ethereum text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-3">ETH Payments</h3>
+                        <p class="text-gray-600">Seamless premium payments using Ethereum cryptocurrency.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Modal -->
+        <div v-if="showLoginModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg w-full max-w-md">
+                <div class="flex justify-between mb-6">
+                    <h3 class="text-2xl font-bold">Login</h3>
+                    <button @click="showLoginModal = false">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <form @submit.prevent="login">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Email</label>
+                        <input type="email" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Password</label>
+                        <input type="password" class="w-full p-2 border rounded" required>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Create Policy Modal -->
+        <div v-if="showCreatePolicyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg w-full max-w-md">
+                <div class="flex justify-between mb-6">
+                    <h3 class="text-2xl font-bold">Create New Policy</h3>
+                    <button @click="showCreatePolicyModal = false">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <form @submit.prevent="createPolicy">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Policy Name</label>
+                        <input type="text" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Coverage Details</label>
+                        <textarea class="w-full p-2 border rounded" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Premium (ETH)</label>
+                        <input type="number" step="0.01" class="w-full p-2 border rounded" required>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+                        Create Policy
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    showLoginModal: false,
+                    showCreatePolicyModal: false,
+                    mobileMenu: false
+                }
+            },
+            methods: {
+                login(e) {
+                    // Handle login logic
+                    this.showLoginModal = false
+                },
+                createPolicy(e) {
+                    // Handle policy creation
+                    this.showCreatePolicyModal = false
+                }
+            }
+        }).mount('#app')
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
